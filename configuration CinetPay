@@ -1,0 +1,221 @@
+<?php
+session_start();
+include 'db_connect.php';
+
+// Configuration CinetPay
+$api_key = "86110119365f879d1aac8e0.43181545";
+$site_id = "105904329";
+$secret_key = "32485060688f6b130340a1.20223593";
+
+// Fonction pour générer une transaction ID unique
+function generateTransactionId() {
+    return uniqid('', true);
+}
+
+// Fonction pour vérifier le paiement via API CinetPay
+function verifierPaiement($transactionId, $api_key, $site_id) {
+    $url = "https://api.cinetpay.com/v2/payment/check";
+    $params = http_build_query([
+        'apikey' => $api_key,
+        'site_id' => $site_id,
+        'transaction_id' => $transactionId
+    ]);
+
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url . '?' . $params);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    if ($response === false) return false;
+
+    $data = json_decode($response, true);
+    if (isset($data['data']['status'])) {
+        return $data['data']['status']; // Ex: ACCEPTED, REFUSED, etc.
+    }
+    return false;
+}
+
+// Traitement du formulaire de paiement
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['initier_paiement'])) {
+    $agent_id = $_SESSION['agent_id'] ?? null;
+    $citoyen_nom = $_POST['citoyen_nom'] ?? '';
+    $citoyen_email = $_POST['citoyen_email'] ?? '';
+    $montant = $_POST['montant'] ?? 0;
+    $description = $_POST['description'] ?? 'Paiement de service';
+    
+    // Validation des données
+    if (!$agent_id) {
+        die("Vous devez être connecté.");
+    }
+    
+    if (empty($citoyen_nom) || empty($montant) || $montant <= 0) {
+        die("Champs obligatoires manquants ou montant invalide.");
+    }
+    
+    // Génération d'un ID de transaction unique
+    $transaction_id = generateTransactionId();
+    
+    // Enregistrer la demande dans la BDD avec statut "en_attente"
+    $stmt = $conn->prepare("INSERT INTO demandes_paiement (agent_id, citoyen_nom, citoyen_email, montant, description, statut, cinetpay_transaction_id) VALUES (?, ?, ?, ?, ?, 'en_attente', ?)");
+    $stmt->bind_param('issdss', $agent_id, $citoyen_nom, $citoyen_email, $montant, $description, $transaction_id);
+    
+    if ($stmt->execute()) {
+        // Redirection vers CinetPay
+        $notify_url = "https://votredomaine.com/notify.php"; // URL de notification
+        $return_url = "https://votredomaine.com/return.php?transaction_id=" . $transaction_id; // URL de retour
+        
+        // Données à envoyer à CinetPay
+        $postData = [
+            'apikey' => $api_key,
+            'site_id' => $site_id,
+            'transaction_id' => $transaction_id,
+            'amount' => $montant,
+            'currency' => 'XOF',
+            'description' => $description,
+            'customer_name' => $citoyen_nom,
+            'customer_email' => $citoyen_email,
+            'notify_url' => $notify_url,
+            'return_url' => $return_url,
+            'channels' => 'ALL'
+        ];
+        
+        // Génération de la signature
+        $signature_data = $postData['amount'] . $postData['currency'] . $postData['transaction_id'] . $postData['site_id'];
+        $postData['signature'] = hash_hmac('sha256', $signature_data, $secret_key);
+        
+        // Formulaire automatique de redirection vers CinetPay
+        echo '<!DOCTYPE html>
+        <html>
+        <head>
+            <title>Redirection vers CinetPay</title>
+        </head>
+        <body>
+            <form id="cinetpay-form" action="https://api.cinetpay.com/v2/payment" method="POST">';
+        
+        foreach ($postData as $key => $value) {
+            echo '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">';
+        }
+        
+        echo '</form>
+            <script type="text/javascript">
+                document.getElementById("cinetpay-form").submit();
+            </script>
+        </body>
+        </html>';
+        exit();
+    } else {
+        echo "Erreur lors de l'enregistrement de la demande: " . $conn->error;
+    }
+}
+
+// Vérification du statut d'un paiement (GET)
+if (isset($_GET['check_transaction'])) {
+    $transaction_id = $_GET['check_transaction'];
+    $statut = verifierPaiement($transaction_id, $api_key, $site_id);
+
+    if ($statut === 'ACCEPTED') {
+        // Mettre à jour le statut dans la BDD
+        $stmt = $conn->prepare("UPDATE demandes_paiement SET statut = 'payé', date_paiement = NOW() WHERE cinetpay_transaction_id = ?");
+        $stmt->bind_param('s', $transaction_id);
+        $stmt->execute();
+        echo "Paiement confirmé.";
+    } elseif ($statut === 'REFUSED' || $statut === 'CANCELLED') {
+        $stmt = $conn->prepare("UPDATE demandes_paiement SET statut = 'annulé' WHERE cinetpay_transaction_id = ?");
+        $stmt->bind_param('s', $transaction_id);
+        $stmt->execute();
+        echo "Paiement annulé ou refusé.";
+    } else {
+        echo "Statut du paiement : " . htmlspecialchars($statut);
+    }
+}
+
+// Formulaire de demande de paiement (à afficher si pas de soumission)
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement CinetPay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Initier un paiement via CinetPay</h2>
+        <form method="POST" action="">
+            <input type="hidden" name="initier_paiement" value="1">
+            
+            <div class="form-group">
+                <label for="citoyen_nom">Nom du citoyen *</label>
+                <input type="text" id="citoyen_nom" name="citoyen_nom" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="citoyen_email">Email du citoyen</label>
+                <input type="email" id="citoyen_email" name="citoyen_email">
+            </div>
+            
+            <div class="form-group">
+                <label for="montant">Montant (FCFA) *</label>
+                <input type="number" id="montant" name="montant" min="1000" step="1000" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description du paiement</label>
+                <input type="text" id="description" name="description" value="Paiement de service">
+            </div>
+            
+            <button type="submit">Payer via CinetPay</button>
+        </form>
+    </div>
+</body>
+</html>
