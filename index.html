@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mairie de Taabo - Services Administratifs en Ligne</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a148c;
+            --primary-light: #7c43bd;
+            --primary-dark: #12005e;
+            --secondary: #f3e5f5;
+            --accent: #ff9800;
+            --text: #212121;
+            --text-light: #757575;
+            --success: #4caf50;
+            --warning: #ffc107;
+            --danger: #f44336;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            background-color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #f57c00;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('https://placehold.co/1200x600/4a148c/ffffff?text=Mairie+de+Taabo') no-repeat center center;
+            background-size: cover;
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(74, 20, 140, 0.8), rgba(18, 0, 94, 0.9));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 4rem 0;
+            background-color: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* Mayor Section */
+        .mayor {
+            padding: 4rem 0;
+            background-color: var(--secondary);
+        }
+
+        .mayor-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .mayor-image {
+            flex: 1;
+        }
+
+        .mayor-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .mayor-info {
+            flex: 2;
+        }
+
+        .mayor-info h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .mayor-info .position {
+            color: var(--primary-light);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        /* News Section */
+        .news {
+            padding: 4rem 0;
+            background-color: var(--white);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .news-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .news-card:hover .news-image img {
+            transform: scale(1.05);
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-date {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-content h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-contact p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: inherit;
+        }
+
+        /* Admin Dashboard */
+        .admin-dashboard {
+            display: none;
+            padding: 2rem 0;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-title {
+            color: var(--text-light);
+        }
+
+        .requests-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .requests-table th, .requests-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .requests-table th {
+            background-color: var(--primary);
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .requests-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-paid {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Document Download Section */
+        .document-download {
+            display: none;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .document-container {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .document-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .document-actions {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Payment Processing */
+        .payment-processing {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .mayor-content {
+                flex-direction: column;
+            }
+            
+            .mayor-image {
+                text-align: center;
+            }
+            
+            .document-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-landmark fa-2x"></i>
+                    <h1>Mairie de Taabo</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#mayor">Le Maire</a></li>
+                        <li><a href="#news">Actualités</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> Connexion Agent
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Services Administratifs en Ligne</h2>
+                <p>Effectuez vos démarches administratives simplement et rapidement depuis chez vous</p>
+                <button class="btn btn-primary" id="requestDocumentBtn">
+                    <i class="fas fa-file-alt"></i> Demander un document
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nos Services</h2>
+                <p>Découvrez tous les services que nous mettons à votre disposition</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-birthday-cake"></i>
+                    </div>
+                    <h3>Acte de Naissance</h3>
+                    <p>Demandez votre extrait d'acte de naissance en ligne et recevez-le rapidement</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Certificat de Résidence</h3>
+                    <p>Obtenez votre certificat de résidence sans vous déplacer à la mairie</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-ring"></i>
+                    </div>
+                    <h3>Acte de Mariage</h3>
+                    <p>Demandez une copie intégrale ou un extrait d'acte de mariage</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mayor Section -->
+    <section class="mayor" id="mayor">
+        <div class="container">
+            <div class="mayor-content">
+                <div class="mayor-image">
+                    <img src="maire-taabo.jpeg" alt="Maire de Taabo">
+                </div>
+                <div class="mayor-info">
+                    <h2>Monsieur BEUGRE BERNARD KOUADIO</h2>
+                    <div class="position">Maire de la Commune de Taabo</div>
+                    <p>Engagé pour le développement local et la transformation numérique des services aux citoyens, Monsieur BEUGRE BERNARD KOUADIO œuvre avec détermination pour améliorer la qualité de vie des habitants de Taabo.</p>
+                    <p>Une localité dynamique située au cœur de la région de l'Agneby-Tiassa, en Côte d'Ivoire. Reconnu pour son engagement profond envers le développement durable et la modernisation des services publics.</p>
+                    <p>Sous sa direction, la commune s'est engagée dans une transformation numérique majeure, facilitant l'accès des citoyens aux démarches administratives grâce à des solutions en ligne innovantes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news" id="news">
+        <div class="container">
+            <div class="section-title">
+                <h2>Actualités de la Région</h2>
+                <p>Restez informé des dernières nouvelles de Taabo et de sa région</p>
+            </div>
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://placehold.co/400x200/4a148c/ffffff?text=Actualité+1" alt="Actualité">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">12 Juillet 2023</div>
+                        <h3>Inauguration du nouveau centre administratif</h3>
+                        <p>Le nouveau centre administratif de Taabo a été inauguré en présence des autorités locales...</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://placehold.co/400x200/4a148c/ffffff?text=Actualité+2" alt="Actualité">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">5 Juillet 2023</div>
+                        <h3>Lancement du programme de développement rural</h3>
+                        <p>La mairie de Taabo lance un nouveau programme de développement rural pour soutenir les agriculteurs...</p>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-image">
+                        <img src="https://placehold.co/400x200/4a148c/ffffff?text=Actualité+3" alt="Actualité">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">28 Juin 2023</div>
+                        <h3>Festival culturel de Taabo 2023</h3>
+                        <p>La 5ème édition du festival culturel de Taabo se tiendra du 15 au 18 août 2023...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Mairie de Taabo</h3>
+                    <p>Services administratifs en ligne - Rapides & Sécurisés</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Coordonnées</h3>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-map-marker-alt"></i> Mairie centrale, Taabo, Côte d'Ivoire</p>
+                        <p><i class="fas fa-clock"></i> Lundi à Vendredi, de 08h à 16h</p>
+                        <p><i class="fas fa-phone"></i> +225 01 02 03 04 05</p>
+                        <p><i class="fas fa-envelope"></i> contact@mairie-taabo.ci</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#mayor">Le Maire</a></li>
+                        <li><a href="#news">Actualités</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Mairie de Taabo - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeLoginModal">&times;</button>
+            <h2 class="modal-title">Connexion Agent</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Request Document Modal -->
+    <div class="modal" id="requestModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeRequestModal">&times;</button>
+            <h2 class="modal-title">Demander un document</h2>
+            <form id="requestForm">
+                <div class="form-group">
+                    <label for="documentType">Type de document</label>
+                    <select id="documentType" class="form-control" required>
+                        <option value="">Sélectionnez un document</option>
+                        <option value="naissance">Acte de naissance</option>
+                        <option value="residence">Certificat de résidence</option>
+                        <option value="mariage">Acte de mariage</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Nom complet</label>
+                    <input type="text" id="fullName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthDate">Date de naissance</label>
+                    <input type="date" id="birthDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="birthPlace">Lieu de naissance</label>
+                    <input type="text" id="birthPlace" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="parentNames">Noms des parents</label>
+                    <input type="text" id="parentNames" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Téléphone</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="emailRequest">Email</label>
+                    <input type="email" id="emailRequest" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-credit-card"></i> Payer et soumettre la demande
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Processing -->
+    <div class="payment-processing" id="paymentProcessing">
+        <div class="spinner"></div>
+        <h3>Traitement du paiement en cours</h3>
+        <p>Veuillez patienter, vous serez redirigé vers la plateforme de paiement CinetPay.</p>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <section class="admin-dashboard" id="adminDashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Tableau de Bord Administratif</h2>
+                <button class="btn btn-outline" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">24</div>
+                    <div class="stat-title">Demandes totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-title">En attente</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-title">Payées</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-title">Traitées</div>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 1rem;">Dernières demandes</h3>
+            <div style="overflow-x: auto;">
+                <table class="requests-table">
+                    <thead>
+                        <tr>
+                            <th>Référence</th>
+                            <th>Nom</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#TA2023-001</td>
+                            <td>Kouassi Yao</td>
+                            <td>Acte de naissance</td>
+                            <td>12/07/2023</td>
+                            <td><span class="status-badge status-completed">Traité</span></td>
+                            <td>
+                                <button class="btn btn-primary view-document" data-ref="TA2023-001" style="padding: 0.25rem 0.5rem;">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#TA2023-002</td>
+                            <td>Aminata Traoré</td>
+                            <td>Certificat de résidence</td>
+                            <td>11/07/2023</td>
+                            <td><span class="status-badge status-paid">Payé</span></td>
+                            <td>
+                                <button class="btn btn-primary view-document" data-ref="TA2023-002" style="padding: 0.25rem 0.5rem;">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#TA2023-003</td>
+                            <td>Coulibaly Habib</td>
+                            <td>Acte de mariage</td>
+                            <td>10/07/2023</td>
+                            <td><span class="status-badge status-pending">En attente</span></td>
+                            <td>
+                                <button class="btn btn-primary" style="padding: 0.25rem 0.5rem;" disabled>
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#TA2023-004</td>
+                            <td>Bamba Aïcha</td>
+                            <td>Acte de naissance</td>
+                            <td>09/07/2023</td>
+                            <td><span class="status-badge status-pending">En attente</span></td>
+                            <td>
+                                <button class="btn btn-primary" style="padding: 0.25rem 0.5rem;" disabled>
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Document Download Section -->
+    <section class="document-download" id="documentDownload">
+        <div class="container">
+            <div class="document-container">
+                <div class="document-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h2>Votre document est prêt!</h2>
+                <p>Vous pouvez maintenant télécharger votre document administratif.</p>
+                <div class="document-details">
+                    <p><strong>Référence:</strong> <span id="docReference"></span></p>
+                    <p><strong>Type:</strong> <span id="docType"></span></p>
+                    <p><strong>Nom:</strong> <span id="docName"></span></p>
+                    <p><strong>Date de génération:</strong> <span id="docDate"></span></p>
+                </div>
+                <div class="document-actions">
+                    <button class="btn btn-primary" id="downloadDocBtn">
+                        <i class="fas fa-download"></i> Télécharger le PDF
+                    </button>
+                    <button class="btn btn-outline" id="backToHomeBtn">
+                        <i class="fas fa-home"></i> Retour à l'accueil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CinetPay Payment Container -->
+    <div id="cinetpay-payment-container" style="display: none;"></div>
+
+    <!-- Load CinetPay SDK -->
+    <script type="text/javascript" src="https://api.cinetpay.com/cdn/seamless.min.js"></script>
+    
+    <script>
+        // Agents credentials
+        const agents = [
+            { email: "bravoboutique225@gmail.com", password: "Maman2009@@" },
+            { email: "lgeradodemadrid1@gmail.com", password: "Maman2009@@" }
+        ];
+
+        // CinetPay API Configuration
+        const cinetpayConfig = {
+            apikey: "86110119365f879d1aac8e0.43181545",
+            site_id: "105904329",
+            secret_key: "32485060688f6b130340a1.20223593",
+            notify_url: "https://votre-domaine.com/cinetpay-webhook", // URL de votre webhook
+            return_url: window.location.origin + window.location.pathname, // URL de retour
+            currency: "XOF"
+        };
+
+        // Store requests in localStorage
+        let requests = JSON.parse(localStorage.getItem('documentRequests')) || [];
+
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+        const loginForm = document.getElementById('loginForm');
+        const requestDocumentBtn = document.getElementById('requestDocumentBtn');
+        const requestModal = document.getElementById('requestModal');
+        const closeRequestModal = document.getElementById('closeRequestModal');
+        const requestForm = document.getElementById('requestForm');
+        const adminDashboard = document.getElementById('adminDashboard');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const documentDownload = document.getElementById('documentDownload');
+        const downloadDocBtn = document.getElementById('downloadDocBtn');
+        const backToHomeBtn = document.getElementById('backToHomeBtn');
+        const viewDocumentBtns = document.querySelectorAll('.view-document');
+        const paymentProcessing = document.getElementById('paymentProcessing');
+
+        // Open login modal
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        // Close login modal
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        // Open request modal
+        requestDocumentBtn.addEventListener('click', () => {
+            requestModal.style.display = 'flex';
+        });
+
+        // Close request modal
+        closeRequestModal.addEventListener('click', () => {
+            requestModal.style.display = 'none';
+        });
+
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Check if credentials match any agent
+            const agent = agents.find(a => a.email === email && a.password === password);
+            
+            if (agent) {
+                // Successful login
+                loginModal.style.display = 'none';
+                adminDashboard.style.display = 'block';
+                
+                // Hide main content
+                document.querySelector('.hero').style.display = 'none';
+                document.querySelector('.services').style.display = 'none';
+                document.querySelector('.mayor').style.display = 'none';
+                document.querySelector('.news').style.display = 'none';
+                document.querySelector('footer').style.display = 'none';
+                
+                // Change login button to show user is logged in
+                loginBtn.innerHTML = '<i class="fas fa-user"></i> Agent';
+            } else {
+                alert('Email ou mot de passe incorrect');
+            }
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', () => {
+            adminDashboard.style.display = 'none';
+            documentDownload.style.display = 'none';
+            
+            // Show main content
+            document.querySelector('.hero').style.display = 'block';
+            document.querySelector('.services').style.display = 'block';
+            document.querySelector('.mayor').style.display = 'block';
+            document.querySelector('.news').style.display = 'block';
+            document.querySelector('footer').style.display = 'block';
+            
+            // Reset login button
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Connexion Agent';
+        });
+
+        // Request form submission
+        requestForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                documentType: document.getElementById('documentType').value,
+                fullName: document.getElementById('fullName').value,
+                birthDate: document.getElementById('birthDate').value,
+                birthPlace: document.getElementById('birthPlace').value,
+                parentNames: document.getElementById('parentNames').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('emailRequest').value,
+                status: 'pending_payment',
+                date: new Date().toLocaleDateString(),
+                reference: 'TA' + new Date().getFullYear() + '-' + (requests.length + 1).toString().padStart(3, '0'),
+                transaction_id: null,
+                amount: getDocumentPrice(document.getElementById('documentType').value)
+            };
+            
+            // Initialize CinetPay payment
+            initCinetPay(formData);
+        });
+
+        // Get document price
+        function getDocumentPrice(documentType) {
+            switch(documentType) {
+                case 'naissance': return 1000;
+                case 'residence': return 2000;
+                case 'mariage': return 3000;
+                default: return 1000;
+            }
+        }
+
+        // Initialize CinetPay payment
+        function initCinetPay(formData) {
+            // Hide request modal and show processing
+            requestModal.style.display = 'none';
+            paymentProcessing.style.display = 'block';
+            
+            // Generate a unique transaction ID
+            const transaction_id = 'CP_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+            formData.transaction_id = transaction_id;
+            
+            // Save the request temporarily
+            sessionStorage.setItem('pendingRequest', JSON.stringify(formData));
+            
+            // Initialize CinetPay
+            window.cinetpay = new CinetPay({
+                apikey: cinetpayConfig.apikey,
+                site_id: cinetpayConfig.site_id,
+                notify_url: cinetpayConfig.notify_url,
+                return_url: cinetpayConfig.return_url,
+                mode: 'PRODUCTION' // ou 'TEST' pour les tests
+            });
+            
+            // Configure payment
+            window.cinetpay.setConfig({
+                currency: cinetpayConfig.currency,
+                transaction_id: transaction_id,
+                amount: formData.amount,
+                description: 'Paiement pour document administratif: ' + getDocumentTypeName(formData.documentType),
+                channels: 'ALL',
+                metadata: formData.reference,
+                customer_name: formData.fullName,
+                customer_email: formData.email,
+                customer_phone_number: formData.phone,
+                customer_address: formData.birthPlace,
+                customer_city: 'Taabo',
+                customer_country: 'CI',
+                customer_state: 'CI',
+                customer_zip_code: '00000'
+            });
+            
+            // Handle payment response
+            window.cinetpay.on('success', function(data) {
+                console.log('Paiement réussi:', data);
+                handlePaymentSuccess(data, formData);
+            });
+            
+            window.cinetpay.on('error', function(data) {
+                console.log('Erreur de paiement:', data);
+                handlePaymentError(data);
+            });
+            
+            window.cinetpay.on('pending', function(data) {
+                console.log('Paiement en attente:', data);
+                handlePaymentPending(data, formData);
+            });
+            
+            // Show payment widget
+            window.cinetpay.showPaymentWidget();
+        }
+
+        // Handle successful payment
+        function handlePaymentSuccess(data, formData) {
+            // Update form data
+            formData.status = 'paid';
+            formData.payment_date = new Date().toLocaleDateString();
+            formData.payment_data = data;
+            
+            // Save the request
+            requests.push(formData);
+            localStorage.setItem('documentRequests', JSON.stringify(requests));
+            
+            // Hide payment processing
+            paymentProcessing.style.display = 'none';
+            
+            // Show success message
+            alert('Paiement effectué avec succès! Votre demande a été enregistrée sous la référence: ' + formData.reference);
+            
+            // Send notification
+            sendNotification(formData, 'Votre paiement a été accepté. Votre document est en cours de traitement.');
+        }
+
+        // Handle payment error
+        function handlePaymentError(data) {
+            // Hide payment processing
+            paymentProcessing.style.display = 'none';
+            
+            // Show error message
+            alert('Erreur lors du paiement: ' + (data.message || 'Une erreur est survenue'));
+            
+            // Show request modal again
+            requestModal.style.display = 'flex';
+        }
+
+        // Handle pending payment
+        function handlePaymentPending(data, formData) {
+            // Update form data
+            formData.status = 'pending';
+            formData.payment_data = data;
+            
+            // Save the request
+            requests.push(formData);
+            localStorage.setItem('documentRequests', JSON.stringify(requests));
+            
+            // Hide payment processing
+            paymentProcessing.style.display = 'none';
+            
+            // Show pending message
+            alert('Paiement en attente de confirmation. Votre demande a été enregistrée sous la référence: ' + formData.reference);
+            
+            // Send notification
+            sendNotification(formData, 'Votre paiement est en attente de confirmation. Votre document sera traité une fois le paiement confirmé.');
+        }
+
+        // Send notification (SMS/Email)
+        function sendNotification(requestData, message) {
+            // In a real implementation, you would integrate with an SMS/Email API
+            console.log('Notification envoyée à:', requestData.phone, requestData.email);
+            console.log('Message:', message);
+            
+            // For demonstration, we'll just show a message
+            alert('Un SMS et un email de confirmation ont été envoyés à ' + requestData.phone + ' et ' + requestData.email);
+        }
+
+        // View document button click
+        viewDocumentBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const ref = btn.getAttribute('data-ref');
+                showDocument(ref);
+            });
+        });
+
+        // Show document download section
+        function showDocument(ref) {
+            // Find the request
+            const request = requests.find(r => r.reference === '#' + ref);
+            
+            if (request) {
+                // Hide admin dashboard
+                adminDashboard.style.display = 'none';
+                
+                // Show document download section
+                documentDownload.style.display = 'block';
+                
+                // Populate document details
+                document.getElementById('docReference').textContent = request.reference;
+                document.getElementById('docType').textContent = getDocumentTypeName(request.documentType);
+                document.getElementById('docName').textContent = request.fullName;
+                document.getElementById('docDate').textContent = new Date().toLocaleDateString();
+            }
+        }
+
+        // Get document type name
+        function getDocumentTypeName(type) {
+            switch(type) {
+                case 'naissance': return 'Acte de naissance';
+                case 'residence': return 'Certificat de résidence';
+                case 'mariage': return 'Acte de mariage';
+                default: return type;
+            }
+        }
+
+        // Download document button click
+        downloadDocBtn.addEventListener('click', () => {
+            // In a real implementation, this would generate a PDF
+            // For demonstration, we'll create a simple PDF download
+            
+            const docRef = document.getElementById('docReference').textContent;
+            const docType = document.getElementById('docType').textContent;
+            const docName = document.getElementById('docName').textContent;
+            
+            // Create a simple PDF content (in a real app, use a PDF generation library)
+            const pdfContent = `
+                <html>
+                <head>
+                    <title>${docType} - ${docRef}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .content { margin: 20px 0; }
+                        .footer { margin-top: 50px; text-align: right; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Mairie de Taabo</h1>
+                        <h2>${docType}</h2>
+                        <p>Référence: ${docRef}</p>
+                    </div>
+                    <div class="content">
+                        <p>Le présent document certifie que:</p>
+                        <p><strong>Nom:</strong> ${docName}</p>
+                        <p><strong>Date de délivrance:</strong> ${new Date().toLocaleDateString()}</p>
+                        <p>Ce document a été délivré électroniquement et est valide sans signature manuscrite.</p>
+                    </div>
+                    <div class="footer">
+                        <p>Mairie de Taabo</p>
+                        <p>Code de vérification: ${Math.random().toString(36).substring(2, 10).toUpperCase()}</p>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            // Create a blob and download link
+            const blob = new Blob([pdfContent], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${docType.replace(/\s+/g, '_')}_${docRef}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // Back to home button click
+        backToHomeBtn.addEventListener('click', () => {
+            documentDownload.style.display = 'none';
+            
+            // Show main content
+            document.querySelector('.hero').style.display = 'block';
+            document.querySelector('.services').style.display = 'block';
+            document.querySelector('.mayor').style.display = 'block';
+            document.querySelector('.news').style.display = 'block';
+            document.querySelector('footer').style.display = 'block';
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+            if (e.target === requestModal) {
+                requestModal.style.display = 'none';
+            }
+        });
+
+        // Check if there's a document reference in URL parameters (for direct access)
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const docRef = urlParams.get('doc');
+            
+            if (docRef) {
+                // Try to find the document
+                const request = requests.find(r => r.reference === '#' + docRef);
+                
+                if (request && request.status === 'paid') {
+                    showDocument(docRef);
+                    
+                    // Hide main content
+                    document.querySelector('.hero').style.display = 'none';
+                    document.querySelector('.services').style.display = 'none';
+                    document.querySelector('.mayor').style.display = 'none';
+                    document.querySelector('.news').style.display = 'none';
+                    document.querySelector('footer').style.display = 'none';
+                }
+            }
+            
+            // Check for CinetPay response
+            checkCinetPayResponse();
+        });
+
+        // Check for CinetPay response in URL parameters
+        function checkCinetPayResponse() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const transactionId = urlParams.get('transaction_id');
+            const status = urlParams.get('status');
+            
+            if (transactionId && status) {
+                // Get pending request from session storage
+                const pendingRequest = JSON.parse(sessionStorage.getItem('pendingRequest') || '{}');
+                
+                if (pendingRequest && pendingRequest.transaction_id === transactionId) {
+                    if (status === 'ACCEPTED') {
+                        handlePaymentSuccess({ transaction_id: transactionId }, pendingRequest);
+                    } else if (status === 'REFUSED') {
+                        handlePaymentError({ message: 'Paiement refusé' });
+                    } else if (status === 'PENDING') {
+                        handlePaymentPending({ transaction_id: transactionId }, pendingRequest);
+                    }
+                    
+                    // Clear URL parameters
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            }
+        }
+
+        // Webhook simulation (for demonstration purposes)
+        // In a real implementation, this would be a server-side endpoint
+        function simulateWebhook(data) {
+            console.log('Webhook reçu:', data);
+            
+            // Find the request by transaction ID
+            const request = requests.find(r => r.transaction_id === data.transaction_id);
+            
+            if (request) {
+                if (data.status === 'ACCEPTED') {
+                    request.status = 'paid';
+                    request.payment_date = new Date().toLocaleDateString();
+                    
+                    // Send notification
+                    sendNotification(request, 'Votre document est prêt! Cliquez sur le lien pour le télécharger: ' + 
+                        window.location.origin + window.location.pathname + '?doc=' + request.reference.substring(1));
+                } else if (data.status === 'REFUSED') {
+                    request.status = 'payment_failed';
+                    
+                    // Send notification
+                    sendNotification(request, 'Votre paiement a échoué. Veuillez réessayer.');
+                }
+                
+                // Update localStorage
+                localStorage.setItem('documentRequests', JSON.stringify(requests));
+            }
+        }
+    </script>
+</body>
+</html>
